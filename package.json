@@ -2,33 +2,21 @@
   "name": "saloon-service",
   "version": "1.0.0",
   "description": "NodeJS JWT Authentication API",
-  "license": "MIT",
+  "main": "server.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cornflourblue/node-jwt-authentication-api.git"
+    "url": "git+https://github.com/Aravin7/saloon-service.git"
   },
-  "scripts": {
-    "start": "nodemon ./server.js",
-    "start:dev": "nodemon ./server.js"
-  },
-  "dependencies": {
-    "body-parser": "^1.19.0",
-    "connect-livereload": "^0.6.1",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "express-jwt": "^6.0.0",
-    "jsonwebtoken": "^8.5.1",
-    "livereload": "^0.9.3",
-    "mysql": "^2.18.1",
-    "rootpath": "^0.1.2"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.15"
-  },
+  "author": "Aravin",
+  "license": "ISC",
   "bugs": {
-    "url": "https://github.com/cornflourblue/node-jwt-authentication-api/issues"
+    "url": "https://github.com/Aravin7/saloon-service/issues"
   },
-  "homepage": "https://github.com/cornflourblue/node-jwt-authentication-api#readme",
-  "main": "server.js",
-  "author": "Aravin"
+  "homepage": "https://github.com/Aravin7/saloon-service#readme"
 }
