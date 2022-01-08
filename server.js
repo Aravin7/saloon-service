@@ -6,7 +6,6 @@ const cors = require("cors");
 const jwt = require("_helpers/jwt");
 const errorHandler = require("_helpers/error-handler");
 
-
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors());
@@ -18,7 +17,7 @@ app.use(jwt());
 app.use("/users", require("./users/users.controller"));
 app.use("/items", require("./items/items.controller"));
 
-// // global error handler
+// global error handler
 app.use(errorHandler);
 
 // start server
