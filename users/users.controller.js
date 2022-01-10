@@ -3,11 +3,15 @@ const router = express.Router();
 const userService = require("./user.service");
 
 // routes
+/* Public routes */
 router.post("/authenticate", authenticate);
-router.get("/", getAll);
-router.post("/", registerUser);
+router.post("/register", registerUser); //register customer,
+
+/* Private routes */
+router.post("/", registerUser); //register employee
 router.get("/user", getSingleUser);
 router.put("/user", updateUser);
+router.get("/", getAll);
 
 module.exports = router;
 

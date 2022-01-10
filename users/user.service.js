@@ -103,6 +103,7 @@ const updateUserTable = (con, id, payload) => {
 
 const saveUser = (con, payload) => {
   return new Promise((resolve, reject) => {
+    console.log("saveuser");
     con.query(
       "INSERT INTO users (username, password, email) VALUES ('" +
         payload.username +
@@ -123,17 +124,22 @@ const saveUser = (con, payload) => {
 
 async function authenticate({ username, password }) {
   try {
-    console.log(username);
+    //console.log(username);
     const conn = await db_connection();
+    //console.log("db_connection");
     const response = await verifyUser(conn, username, password);
+    //console.log("verifyUser");
     if (response.length < 1) return "Username or password is incorrect";
+    //console.log("pass");
     const token = jwt.sign({ sub: response.id }, config.secret, {
       expiresIn: "7d",
     });
+    //console.log("pass");
     return {
       ...omitPassword(response),
       token,
     };
+    //console.log("finished");
   } catch (e) {
     console.error;
   }
@@ -184,7 +190,9 @@ async function updateUser(id, payload) {
 
 async function registerUser(payload) {
   try {
+    console.log("payload", payload);
     const conn = await db_connection();
+    console.log(conn);
     const response = await saveUser(conn, payload);
     if (response)
       return { status: 200, msg: "User added successfully", response };
