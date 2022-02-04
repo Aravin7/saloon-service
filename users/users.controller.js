@@ -5,7 +5,7 @@ const userService = require("./user.service");
 // routes
 /* Public routes */
 router.post("/authenticate", authenticate);
-router.post("/register", registerUser); //register customer,
+router.post("/register", registerUserCustomer); //register customer,
 
 /* Private routes */
 router.post("/", registerUser); //register employee
@@ -46,6 +46,15 @@ function updateUser(req, res, next) {
 function registerUser(req, res, next) {
   userService
     .registerUser(req.body)
+    .then((response) => {
+      res.status(response.status);
+      res.json(response);
+    })
+    .catch(next);
+}
+function registerUserCustomer(req, res, next) {
+  userService
+    .registerUserCustomer(req.body)
     .then((response) => {
       res.status(response.status);
       res.json(response);

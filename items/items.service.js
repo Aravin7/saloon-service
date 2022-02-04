@@ -12,7 +12,7 @@ const db_connection = () => {
       host: "localhost",
       user: "root",
       password: "",
-      database: "test_db",
+      database: "eagle_saloon_db",
     });
     con.connect(function (err) {
       if (err) return reject(err);

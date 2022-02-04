@@ -6,6 +6,7 @@ module.exports = {
   authenticate,
   getAll,
   registerUser,
+  registerUserCustomer,
   getSingleUser,
   updateUser,
 };
@@ -122,6 +123,42 @@ const saveUser = (con, payload) => {
   });
 };
 
+const saveUserCustomer = (con, payload) => {
+  return new Promise((resolve, reject) => {
+    console.log("saveuser");
+    role = "customer";
+    con.query(
+      "INSERT INTO users (username, password, email,telephoneNo) VALUES ('" +
+        payload.username +
+        "', '" +
+        payload.password +
+        "','" +
+        payload.email +
+        "');",
+      function (err, result) {
+        if (err) return reject(err);
+        console.log(result);
+        resolve(result);
+      }
+    );
+    //second query
+    /*     con.query(
+      "INSERT INTO users (username, password, email,telephoneNo) VALUES ('" +
+        payload.username +
+        "', '" +
+        payload.password +
+        "','" +
+        payload.email +
+        "');",       
+    function (err, result) {
+        if (err) return reject(err)start;
+        console.log(result);
+        resolve(result);
+      }
+    ); */
+  });
+};
+
 async function authenticate({ username, password }) {
   try {
     //console.log(username);
@@ -206,6 +243,23 @@ async function registerUser(payload) {
   }
 }
 
+async function registerUserCustomer(payload) {
+  try {
+    console.log("payload", payload);
+    const conn = await db_connection();
+    console.log(conn);
+    const response = await saveUserCustomer(conn, payload);
+    if (response)
+      return { status: 200, msg: "User added successfully", response };
+    return { status: 400, msg: "Something Went Wrong", response };
+  } catch (e) {
+    console.error;
+    if (e.code == "ER_DUP_ENTRY") {
+      return { status: 400, msg: "Email already exist" };
+    }
+    return { status: 400, msg: "Something Went Wrong" };
+  }
+}
 // helper functions
 
 function omitPassword(user) {
