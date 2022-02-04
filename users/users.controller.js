@@ -2,6 +2,7 @@
 const router = express.Router();
 const userService = require("./user.service");
 
+
 // routes
 /* Public routes */
 router.post("/authenticate", authenticate);
