@@ -31,7 +31,68 @@ const db_connection = () => {
   });
 };
 
+//SELECT u.user_id,u.email,u.created_date,u.role,c.cus_name FROM users AS u JOIN customer AS c ON(u,user_id=c.user_id)
 const verifyUser = (con, email, password) => {
+  return new Promise((resolve, reject) => {
+    con.query(
+      "SELECT password,role FROM users WHERE email='" + email + "';",
+      function (err, result) {
+        console.log("result", result);
+        if (err) return reject(err);
+        if (result.length < 1) {
+          return resolve([]);
+        } else {
+          console.log("data related to the password is successfuly retrived");
+          const hash = result[0].password;
+          const role = result[0].role;
+          var validPassword = bcrypt.compareSync(password, hash);
+          console.log("validPassword", validPassword);
+          if (validPassword) {
+            if (role === "admin") {
+              con.query(
+                "SELECT u.user_id,u.email,u.created_date,u.role,c.admin_name FROM users AS u JOIN admin AS c ON(u.user_id=c.user_id) WHERE u.email='" +
+                  email +
+                  "' and u.password='" +
+                  hash +
+                  "';",
+                function (err, result) {
+                  //console.log("result", result[0]);
+                  if (err) return reject(err);
+                  if (result.length < 1) {
+                    return resolve([]);
+                  } else {
+                    console.log("returend the data");
+                    return resolve(result[0]);
+                  }
+                }
+              );
+            } else {
+              con.query(
+                "SELECT u.user_id,u.email,u.created_date,u.role,c.emp_name FROM users AS u JOIN employee AS c ON(u.user_id=c.user_id) WHERE u.email='" +
+                  email +
+                  "' and u.password='" +
+                  hash +
+                  "';",
+                function (err, result) {
+                  //console.log("result", result[0]);
+                  if (err) return reject(err);
+                  if (result.length < 1) {
+                    return resolve([]);
+                  } else {
+                    console.log("returend the data");
+                    return resolve(result[0]);
+                  }
+                }
+              );
+            }
+          } else console.log("Not valid passowrd/hash is wrong");
+        }
+      }
+    );
+  });
+};
+
+/* const verifyUser = (con, email, password) => {
   return new Promise((resolve, reject) => {
     con.query(
       "SELECT password FROM users WHERE email='" + email + "';",
@@ -68,7 +129,7 @@ const verifyUser = (con, email, password) => {
     );
   });
 };
-
+ */
 /* const verifyUser = (con, email, password) => {
   return new Promise((resolve, reject) => {
     con.query(
