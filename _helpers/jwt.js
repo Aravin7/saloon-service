@@ -7,7 +7,7 @@ function jwt() {
   const { secret } = config;
   return expressJwt({ secret, algorithms: ["HS256"] }).unless({
     path: [
-      // public routes that don't require jwt authentication
+      // public routes that don't require jwt authentication('/register'->cutomers portal)
       "/users/authenticate",
       "/users/register",
     ],
