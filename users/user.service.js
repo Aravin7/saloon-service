@@ -42,7 +42,7 @@ const verifyUser = (con, email, password) => {
         if (result.length < 1) {
           return resolve([]);
         } else {
-          console.log("data related to the password is successfuly retrived");
+          console.log("data related to the password is successfully retrieved");
           const hash = result[0].password;
           const role = result[0].role;
           var validPassword = bcrypt.compareSync(password, hash);
@@ -61,7 +61,7 @@ const verifyUser = (con, email, password) => {
                   if (result.length < 1) {
                     return resolve([]);
                   } else {
-                    console.log("returend the data");
+                    console.log("returned the data");
                     return resolve(result[0]);
                   }
                 }
@@ -79,13 +79,13 @@ const verifyUser = (con, email, password) => {
                   if (result.length < 1) {
                     return resolve([]);
                   } else {
-                    console.log("returend the data");
+                    console.log("returned the data");
                     return resolve(result[0]);
                   }
                 }
               );
             }
-          } else console.log("Not valid passowrd/hash is wrong");
+          } else console.log("Not valid password/hash is wrong");
         }
       }
     );
@@ -101,7 +101,7 @@ const verifyUser = (con, email, password) => {
         if (result.length < 1) {
           return resolve([]);
         } else {
-          //console.log("data related to the password is successfuly retrived");
+          //console.log("data related to the password is successfully retrieved");
           let hash = result[0].password;
           var validPassword = bcrypt.compareSync(password, hash);
           //console.log("validPassword", validPassword);
