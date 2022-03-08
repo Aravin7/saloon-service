@@ -37,16 +37,16 @@ const verifyUser = (con, email, password) => {
     con.query(
       "SELECT password,role FROM users WHERE email='" + email + "';",
       function (err, result) {
-        console.log("result", result);
+        //console.log("result", result);
         if (err) return reject(err);
         if (result.length < 1) {
           return resolve([]);
         } else {
-          console.log("data related to the password is successfully retrieved");
+          //console.log("data related to the password is successfully retrieved");
           const hash = result[0].password;
           const role = result[0].role;
           var validPassword = bcrypt.compareSync(password, hash);
-          console.log("validPassword", validPassword);
+          //console.log("validPassword", validPassword);
           if (validPassword) {
             if (role === "admin") {
               con.query(
@@ -61,7 +61,7 @@ const verifyUser = (con, email, password) => {
                   if (result.length < 1) {
                     return resolve([]);
                   } else {
-                    console.log("returned the data");
+                    //console.log("returned the data");
                     return resolve(result[0]);
                   }
                 }
@@ -79,7 +79,7 @@ const verifyUser = (con, email, password) => {
                   if (result.length < 1) {
                     return resolve([]);
                   } else {
-                    console.log("returned the data");
+                    //console.log("returned the data");
                     return resolve(result[0]);
                   }
                 }
@@ -166,7 +166,7 @@ const getAllUsers = (con) => {
 const getUser = (con, id) => {
   return new Promise((resolve, reject) => {
     con.query(
-      "SELECT * FROM users where id= " + id + ";",
+      "SELECT * FROM users where user_id= " + id + ";",
       function (err, result) {
         if (err) return reject(err);
         if (result.length < 1) {
@@ -187,7 +187,7 @@ const updateUserTable = (con, id, payload) => {
       payload.username +
       "',email='" +
       payload.email +
-      "' where id= " +
+      "' where user_id= " +
       id +
       ";";
 
@@ -224,7 +224,7 @@ const saveUser = (con, payload) => {
       function (err, result) {
         if (err) return reject(err);
 
-        console.log(result);
+        //console.log(result);
         resolve(result);
       }
     );
@@ -318,7 +318,7 @@ const saveUserCustomer = (con, payload) => {
 
 async function authenticate({ email, password }) {
   try {
-    console.log(email);
+    //console.log(email);
     let formPassword = password;
     //console.log(formPassword);
     const conn = await db_connection();
@@ -330,7 +330,7 @@ async function authenticate({ email, password }) {
     const response = await verifyUser(conn, email, password);
 
     //console.log("response", response.password);
-    console.log("response", response);
+    //console.log("response", response);
     //console.log("response", response.length);
 
     //if (!verified) return "email or password is incorrect";
@@ -418,7 +418,7 @@ async function updateUser(id, payload) {
   try {
     const conn = await db_connection();
     const response = await updateUserTable(conn, id, payload);
-    console.log(response, "ASDADASDASDADS");
+    //console.log(response, "ASDADASDASDADS");
     if (response.length < 1) return "No Data";
     if (response)
       return { status: 200, msg: "User Updated successfully", response };
@@ -433,9 +433,9 @@ async function updateUser(id, payload) {
 
 async function registerUser(payload) {
   try {
-    console.log("payload", payload);
+    //console.log("payload", payload);
     const conn = await db_connection();
-    console.log(conn);
+    //console.log(conn);
     const response = await saveUser(conn, payload);
     if (response)
       return { status: 200, msg: "User added successfully", response };
