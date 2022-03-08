@@ -11,7 +11,6 @@ module.exports = {
 };
 
 //database connection
-
 const db_connection = () => {
   return new Promise((resolve, reject) => {
     var con = mysql.createConnection({
@@ -92,42 +91,53 @@ const verifyUser = (con, email, password) => {
  */
 
 //mysql query start
+
+//Get All blog list query
 const getAllBlogList = (con) => {
+  //console.log("getAllBlogList");
   return new Promise((resolve, reject) => {
-    con.query("SELECT * FROM blogs;", function (err, result) {
+    con.query("SELECT id,title,content FROM blogs;", function (err, result) {
       if (err) return reject(err);
       if (result.length < 1) {
         return resolve([]);
       } else {
+        console.log("Data successfully retrieved");
         resolve(result);
       }
     });
   });
 };
 
+//Get a blog query
 const getBlog = (con, id) => {
-  /* return new Promise((resolve, reject) => {
+  console.log("getBlog");
+  return new Promise((resolve, reject) => {
     con.query(
-      "SELECT * FROM users where id= " + id + ";",
+      "SELECT title,content FROM blogs where id= " + id + ";",
       function (err, result) {
-        if (err) return reject(err);
+        if (err) {
+          console.error(err);
+          return reject(err);
+        }
         if (result.length < 1) {
           return resolve([]);
         } else {
+          console.log(result);
           resolve(result);
         }
       }
     );
-  }); */
+  });
 };
 
+//update Blog Table query
 const updateBlogTable = (con, id, payload) => {
   console.log("Update arrived", payload);
   return new Promise((resolve, reject) => {
     const sql =
-      "UPDATE blogs SET blog_title='" +
+      "UPDATE blogs SET title='" +
       payload.title +
-      "',blog_content='" +
+      "',content='" +
       payload.content +
       "' where id= " +
       id +
@@ -147,6 +157,7 @@ const updateBlogTable = (con, id, payload) => {
   });
 };
 
+//Insert Blog query
 const saveBlog = (con, payload) => {
   return new Promise((resolve, reject) => {
     //console.log("saveuser");
@@ -156,22 +167,51 @@ const saveBlog = (con, payload) => {
     kept he as employee
     */
     con.query(
-      "INSERT INTO blogs (blog_title, blog_content) VALUES ('" +
+      "INSERT INTO blogs (title, content) VALUES ('" +
         payload.title +
         "', '" +
         payload.content +
         "');",
       function (err, result) {
-        if (err) return reject(err);
-        console.log("result", result);
+        if (err) {
+          console.error(err);
+          return reject(err);
+        }
+        //console.log("result", result);
         resolve(result);
       }
     );
   });
 };
-//mysql query end
 
+//Delete Blog query
+const deleteBlog = (con, id) => {
+  console.log("deleteBlog");
+  return new Promise((resolve, reject) => {
+    con.query(
+      "DELETE FROM blogs where id= " + id + ";",
+      function (err, result) {
+        if (err) {
+          console.error(err);
+          return reject(err);
+        }
+        if (result.length < 1) {
+          return resolve([]);
+        } else {
+          console.log(result);
+          resolve(result);
+        }
+      }
+    );
+  });
+};
+
+/* mysql query end */
+
+/* Function list start */
+//Get All Blog function
 async function getAllBlog() {
+  //console.log("getAllBlog");
   try {
     const conn = await db_connection();
     const response = await getAllBlogList(conn);
@@ -184,19 +224,21 @@ async function getAllBlog() {
   }
 }
 
+//Get Single Blog function
 async function getSingleBlog(id) {
   try {
     const conn = await db_connection();
+    console.log("db_connection okay");
     const response = await getBlog(conn, id);
+    console.log("getBlog okay");
     if (response.length < 1) return "No Data";
-    return {
-      ...omitPassword(response),
-    };
+    else return response;
   } catch (e) {
     console.error;
   }
 }
 
+//Update Blog function
 async function updateBlog(id, payload) {
   try {
     const conn = await db_connection();
@@ -214,10 +256,11 @@ async function updateBlog(id, payload) {
   }
 }
 
+//Remove Blog function
 async function removeBlog(id, payload) {
   try {
     const conn = await db_connection();
-    const response = await updateBlogTable(conn, id, payload);
+    const response = await deleteBlog(conn, id, payload);
     console.log(response, "ASDADASDASDADS");
     if (response.length < 1) return "No Data";
     if (response)
@@ -231,13 +274,14 @@ async function removeBlog(id, payload) {
   }
 }
 
+//Add Blog function
 async function addBlog(payload) {
   try {
     //console.log("payload", payload);
     const conn = await db_connection();
     //console.log(conn);
     const response = await saveBlog(conn, payload);
-    console.log(response);
+    //console.log(response);
     if (response)
       return { status: 200, msg: "Blog added successfully", response };
     else return { status: 400, msg: "Something Went Wrong", response };
