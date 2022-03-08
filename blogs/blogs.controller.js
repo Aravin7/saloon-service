@@ -1,47 +1,49 @@
 ﻿const express = require("express");
 const router = express.Router();
-const userService = require("./blogs.service");
+const blogService = require("./blogs.service");
 
 // routes
 
 router.post("/", addBlog); //save blog
-router.put("/:id", updateBlog);
+router.put("/edit", updateBlog);
 router.delete("/:id", removeBlog);
-router.get("/edit/:id", getSingleBlog);
+router.get("/edit", getSingleBlog);
 router.get("/", getAllBlog);
 
 module.exports = router;
 
 function getAllBlog(req, res, next) {
-  userService
+  blogService
     .getAllBlog()
     .then((users) => res.json(users))
     .catch(next);
 }
 
 function getSingleBlog(req, res, next) {
- /*  userService
+  //console.log("req.query.id", req.query.id);
+  blogService
     .getSingleBlog(req.query.id)
     .then((users) => res.json(users))
-    .catch(next); */
+    .catch(next);
 }
 
 function updateBlog(req, res, next) {
-  userService
+  blogService
     .updateBlog(req.query.id, req.body)
     .then((users) => res.json(users))
     .catch(next);
 }
 
 function removeBlog(req, res, next) {
-  userService
-    .removeBlog(req.query.id, req.body)
+  console.log("hi");
+  /* blogService
+    .removeBlog(req.query.id)
     .then((users) => res.json(users))
-    .catch(next);
+    .catch(next); */
 }
 
 function addBlog(req, res, next) {
-  userService
+  blogService
     .addBlog(req.body)
     .then((response) => {
       res.status(response.status);
