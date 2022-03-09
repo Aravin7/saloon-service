@@ -101,7 +101,7 @@ const getAllBlogList = (con) => {
       if (result.length < 1) {
         return resolve([]);
       } else {
-        console.log("Data successfully retrieved");
+        //console.log("Data successfully retrieved");
         resolve(result);
       }
     });
@@ -228,9 +228,9 @@ async function getAllBlog() {
 async function getSingleBlog(id) {
   try {
     const conn = await db_connection();
-    console.log("db_connection okay");
+    console.log("getSingleBlog db_connection okay");
     const response = await getBlog(conn, id);
-    console.log("getBlog okay");
+    console.log("getBlog okay", response);
     if (response.length < 1) return "No Data";
     else return response;
   } catch (e) {
