@@ -110,7 +110,7 @@ const getAllBlogList = (con) => {
 
 //Get a blog query
 const getBlog = (con, id) => {
-  console.log("getBlog");
+  //console.log("getBlog");
   return new Promise((resolve, reject) => {
     con.query(
       "SELECT title,content FROM blogs where id= " + id + ";",
@@ -122,7 +122,7 @@ const getBlog = (con, id) => {
         if (result.length < 1) {
           return resolve([]);
         } else {
-          console.log(result);
+          //console.log(result);
           resolve(result);
         }
       }
@@ -132,7 +132,7 @@ const getBlog = (con, id) => {
 
 //update Blog Table query
 const updateBlogTable = (con, id, payload) => {
-  console.log("Update arrived", payload);
+  //console.log("Update arrived", payload);
   return new Promise((resolve, reject) => {
     const sql =
       "UPDATE blogs SET title='" +
@@ -143,12 +143,12 @@ const updateBlogTable = (con, id, payload) => {
       id +
       ";";
 
-    console.log(sql, "sql");
+    //console.log(sql, "sql");
     con.query(sql, function (err, result) {
-      console.log(err, result, "result, error");
+      //console.log(err, result, "result, error");
       if (err) return reject(err);
       if (result.length < 1) {
-        console.log(result, "SFSDFDSFDSFSDFSDFSD");
+        //console.log(result, "SFSDFDSFDSFSDFSDFSD");
         return resolve([]);
       } else {
         resolve(result);
@@ -228,9 +228,9 @@ async function getAllBlog() {
 async function getSingleBlog(id) {
   try {
     const conn = await db_connection();
-    console.log("getSingleBlog db_connection okay");
+    //console.log("getSingleBlog db_connection okay");
     const response = await getBlog(conn, id);
-    console.log("getBlog okay", response);
+    //console.log("getBlog okay", response);
     if (response.length < 1) return "No Data";
     else return response;
   } catch (e) {
@@ -243,7 +243,7 @@ async function updateBlog(id, payload) {
   try {
     const conn = await db_connection();
     const response = await updateBlogTable(conn, id, payload);
-    console.log(response, "ASDADASDASDADS");
+    //console.log(response, "ASDADASDASDADS");
     if (response.length < 1) return "No Data";
     if (response)
       return { status: 200, msg: "User Updated successfully", response };
@@ -261,7 +261,7 @@ async function removeBlog(id, payload) {
   try {
     const conn = await db_connection();
     const response = await deleteBlog(conn, id, payload);
-    console.log(response, "ASDADASDASDADS");
+    console.log(response, "removeBlog");
     if (response.length < 1) return "No Data";
     if (response)
       return { status: 200, msg: "User Updated successfully", response };
