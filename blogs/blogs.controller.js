@@ -7,7 +7,7 @@ const blogService = require("./blogs.service");
 router.post("/", addBlog); //save blog
 router.put("/edit", updateBlog);
 router.delete("/:id", removeBlog);
-router.get("/edit", getSingleBlog);
+router.get("/blog", getSingleBlog);
 router.get("/", getAllBlog);
 
 module.exports = router;
