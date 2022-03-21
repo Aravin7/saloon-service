@@ -96,7 +96,7 @@ const verifyUser = (con, email, password) => {
 const getAllBlogList = (con) => {
   //console.log("getAllBlogList");
   return new Promise((resolve, reject) => {
-    con.query("SELECT id,title,content FROM blogs;", function (err, result) {
+    con.query("SELECT * FROM blogs;", function (err, result) {
       if (err) return reject(err);
       if (result.length < 1) {
         return resolve([]);
@@ -116,7 +116,7 @@ const getBlog = (con, id) => {
       "SELECT title,content FROM blogs where id= " + id + ";",
       function (err, result) {
         if (err) {
-          console.error(err);
+          //console.error(err);
           return reject(err);
         }
         if (result.length < 1) {
@@ -174,7 +174,7 @@ const saveBlog = (con, payload) => {
         "');",
       function (err, result) {
         if (err) {
-          console.error(err);
+          //console.error(err);
           return reject(err);
         }
         //console.log("result", result);
@@ -186,7 +186,7 @@ const saveBlog = (con, payload) => {
 
 //Delete Blog query
 const deleteBlog = (con, id) => {
-  console.log("deleteBlog");
+  console.log("deleteBlog", id);
   return new Promise((resolve, reject) => {
     con.query(
       "DELETE FROM blogs where id= " + id + ";",
@@ -198,7 +198,7 @@ const deleteBlog = (con, id) => {
         if (result.length < 1) {
           return resolve([]);
         } else {
-          console.log(result);
+          //console.log(result);
           resolve(result);
         }
       }
@@ -215,6 +215,7 @@ async function getAllBlog() {
   try {
     const conn = await db_connection();
     const response = await getAllBlogList(conn);
+    //console.log(response);
     if (response.length < 1) return "No Data";
     return {
       ...omitPassword(response),
@@ -259,17 +260,15 @@ async function updateBlog(id, payload) {
 //Remove Blog function
 async function removeBlog(id, payload) {
   try {
+    //console.log(id, "removeBlog");
     const conn = await db_connection();
     const response = await deleteBlog(conn, id, payload);
-    console.log(response, "removeBlog");
+    //console.log(response, "removeBlog");
     if (response.length < 1) return "No Data";
     if (response)
-      return { status: 200, msg: "User Updated successfully", response };
+      return { status: 200, msg: "Blog delete successfully", response };
     return { status: 400, msg: "Something Went Wrong", response };
   } catch (e) {
-    if (e.code == "ER_DUP_ENTRY") {
-      return { status: 400, msg: "Email already exist" };
-    }
     return { status: 400, msg: "Something Went Wrong" };
   }
 }

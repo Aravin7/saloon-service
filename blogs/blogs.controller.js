@@ -6,7 +6,7 @@ const blogService = require("./blogs.service");
 
 router.post("/", addBlog); //save blog
 router.put("/edit", updateBlog);
-router.delete("/:id", removeBlog);
+router.delete("/", removeBlog);
 router.get("/blog", getSingleBlog);
 router.get("/", getAllBlog);
 
@@ -35,11 +35,11 @@ function updateBlog(req, res, next) {
 }
 
 function removeBlog(req, res, next) {
-  console.log("hi");
-  /* blogService
+  //console.log("hi");
+  blogService
     .removeBlog(req.query.id)
     .then((users) => res.json(users))
-    .catch(next); */
+    .catch(next);
 }
 
 function addBlog(req, res, next) {
