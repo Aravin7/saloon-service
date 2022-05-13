@@ -50,7 +50,7 @@ const verifyUser = (con, email, password) => {
           if (validPassword) {
             if (role === "admin") {
               con.query(
-                "SELECT u.user_id,u.email,u.created_date,u.role,c.admin_name FROM users AS u JOIN admin AS c ON(u.user_id=c.user_id) WHERE u.email='" +
+                "SELECT u.user_id,u.email,u.created_date,u.role,c.f_name,c.l_name FROM users AS u JOIN admin AS c ON(u.user_id=c.user_id) WHERE u.email='" +
                   email +
                   "' and u.password='" +
                   hash +
@@ -68,7 +68,7 @@ const verifyUser = (con, email, password) => {
               );
             } else {
               con.query(
-                "SELECT u.user_id,u.email,u.created_date,u.role,c.emp_name FROM users AS u JOIN employee AS c ON(u.user_id=c.user_id) WHERE u.email='" +
+                "SELECT u.user_id,u.email,u.created_date,u.role,c.f_name,c.l_name FROM users AS u JOIN employee AS c ON(u.user_id=c.user_id) WHERE u.email='" +
                   email +
                   "' and u.password='" +
                   hash +
