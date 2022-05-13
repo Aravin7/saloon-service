@@ -186,7 +186,7 @@ const saveBlog = (con, payload) => {
 
 //Delete Blog query
 const deleteBlog = (con, id) => {
-  console.log("deleteBlog", id);
+  //console.log("deleteBlog", id);
   return new Promise((resolve, reject) => {
     con.query(
       "DELETE FROM blogs where id= " + id + ";",
