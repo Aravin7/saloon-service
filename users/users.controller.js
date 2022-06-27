@@ -10,7 +10,7 @@ router.post("/register", registerUserCustomer); //register customer,
 /* Private routes */
 router.post("/", registerUser); //register employee
 router.get("/user", getSingleUser);
-router.put("/user", updateUser);
+router.put("/edit", updateUser);
 router.get("/", getAll);
 
 module.exports = router;
