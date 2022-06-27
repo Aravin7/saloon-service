@@ -2,7 +2,6 @@
 const router = express.Router();
 const userService = require("./user.service");
 
-
 // routes
 /* Public routes */
 router.post("/authenticate", authenticate);
@@ -11,7 +10,7 @@ router.post("/register", registerUserCustomer); //register customer,
 /* Private routes */
 router.post("/", registerUser); //register employee
 router.get("/user", getSingleUser);
-router.put("/user", updateUser);
+router.put("/edit", updateUser);
 router.get("/", getAll);
 
 module.exports = router;

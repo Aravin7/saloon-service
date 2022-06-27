@@ -37,20 +37,20 @@ const verifyUser = (con, email, password) => {
     con.query(
       "SELECT password,role FROM users WHERE email='" + email + "';",
       function (err, result) {
-        console.log("result", result);
+        //console.log("result", result);
         if (err) return reject(err);
         if (result.length < 1) {
           return resolve([]);
         } else {
-          console.log("data related to the password is successfuly retrived");
+          //console.log("data related to the password is successfully retrieved");
           const hash = result[0].password;
           const role = result[0].role;
           var validPassword = bcrypt.compareSync(password, hash);
-          console.log("validPassword", validPassword);
+          //console.log("validPassword", validPassword);
           if (validPassword) {
             if (role === "admin") {
               con.query(
-                "SELECT u.user_id,u.email,u.created_date,u.role,c.admin_name FROM users AS u JOIN admin AS c ON(u.user_id=c.user_id) WHERE u.email='" +
+                "SELECT u.user_id,u.email,u.created_date,u.role,c.f_name,c.l_name,c.tel_no FROM users AS u JOIN admin AS c ON(u.user_id=c.user_id) WHERE u.email='" +
                   email +
                   "' and u.password='" +
                   hash +
@@ -61,14 +61,14 @@ const verifyUser = (con, email, password) => {
                   if (result.length < 1) {
                     return resolve([]);
                   } else {
-                    console.log("returend the data");
+                    //console.log("returned the data");
                     return resolve(result[0]);
                   }
                 }
               );
             } else {
               con.query(
-                "SELECT u.user_id,u.email,u.created_date,u.role,c.emp_name FROM users AS u JOIN employee AS c ON(u.user_id=c.user_id) WHERE u.email='" +
+                "SELECT u.user_id,u.email,u.created_date,u.role,c.f_name,c.l_name,c.tel_no FROM users AS u JOIN employee AS c ON(u.user_id=c.user_id) WHERE u.email='" +
                   email +
                   "' and u.password='" +
                   hash +
@@ -79,13 +79,13 @@ const verifyUser = (con, email, password) => {
                   if (result.length < 1) {
                     return resolve([]);
                   } else {
-                    console.log("returend the data");
+                    //console.log("returned the data");
                     return resolve(result[0]);
                   }
                 }
               );
             }
-          } else console.log("Not valid passowrd/hash is wrong");
+          } else console.log("Not valid password/hash is wrong");
         }
       }
     );
@@ -101,7 +101,7 @@ const verifyUser = (con, email, password) => {
         if (result.length < 1) {
           return resolve([]);
         } else {
-          //console.log("data related to the password is successfuly retrived");
+          //console.log("data related to the password is successfully retrieved");
           let hash = result[0].password;
           var validPassword = bcrypt.compareSync(password, hash);
           //console.log("validPassword", validPassword);
@@ -163,10 +163,28 @@ const getAllUsers = (con) => {
   });
 };
 
-const getUser = (con, id) => {
+/* const getUser = (con, id) => {
   return new Promise((resolve, reject) => {
     con.query(
-      "SELECT * FROM users where id= " + id + ";",
+      "SELECT * FROM users where user_id= " + id + ";",
+      function (err, result) {
+        if (err) return reject(err);
+        if (result.length < 1) {
+          return resolve([]);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+}; */
+
+const getUser = (con, id) => {
+  return new Promise((resolve, reject) => {
+    //SELECT role FROM users where user_id= " + id + "
+    //if const role=='admin' then SELECT * FROM users  where user_id= " + id +
+    con.query(
+      "SELECT * FROM users where user_id= " + id + ";",
       function (err, result) {
         if (err) return reject(err);
         if (result.length < 1) {
@@ -179,7 +197,7 @@ const getUser = (con, id) => {
   });
 };
 
-const updateUserTable = (con, id, payload) => {
+/* const updateUserTable = (con, id, payload) => {
   console.log("Update arrived", payload);
   return new Promise((resolve, reject) => {
     const sql =
@@ -187,7 +205,7 @@ const updateUserTable = (con, id, payload) => {
       payload.username +
       "',email='" +
       payload.email +
-      "' where id= " +
+      "' where user_id= " +
       id +
       ";";
 
@@ -202,6 +220,135 @@ const updateUserTable = (con, id, payload) => {
         resolve(result);
       }
     });
+  });
+}; */
+
+/* const updateUserTable = (con, id, payload) => {
+  //console.log("Update arrived", payload);
+  //if role==admin else 
+  /*  return new Promise((resolve, reject) => {
+    const sql =
+      "UPDATE employee e, users u username='" +
+      payload.email +
+      "',e.f_name='" +
+      payload.f_name +
+      "', e.l_name='" +
+      payload.l_name +
+       "',e.tel_no='" +
+      payload.telephone +
+      "' where user_id= " +
+      id +
+      ";";
+
+    console.log(sql, "sql");
+    con.query(sql, function (err, result) {
+      console.log(err, result, "result, error");
+      if (err) return reject(err);
+      if (result.length < 1) {
+        console.log(result, "SFSDFDSFDSFSDFSDFSD");
+        return resolve([]);
+      } else {
+        resolve(result);
+      }
+    });
+  }); 
+}; 
+
+const updateUserTable = (con, id, payload) => {
+    return new Promise((resolve, reject) => {
+    const sql =
+      "UPDATE employee e, users u username='" +
+      payload.email +
+      "',e.f_name='" +
+      payload.f_name +
+      "', e.l_name='" +
+      payload.l_name +
+       "',e.tel_no='" +
+      payload.telephone +
+      "' where user_id= " +
+      id +
+      ";";
+
+    console.log(sql, "sql");
+    con.query(sql, function (err, result) {
+      console.log(err, result, "result, error");
+      if (err) return reject(err);
+      if (result.length < 1) {
+        console.log(result, "SFSDFDSFDSFSDFSDFSD");
+        return resolve([]);
+      } else {
+        resolve(result);
+      }
+    });
+  }); 
+};*/
+
+const updateUserTable = (con, id, payload) => {
+  return new Promise((resolve, reject) => {
+    con.query(
+      "SELECT role FROM users WHERE user_id='" + id + "';",
+      function (err, result) {
+        console.log("result", result);
+        if (err) return reject(err);
+        if (result.length < 1) {
+          return resolve([]);
+        } else {
+          console.log("data successfully retrieved", result[0].role);
+          const role = result[0].role;
+          if (role === "emp") {
+            const sql =
+              "UPDATE employee e, users u SET u.email='" +
+              payload.email +
+              "',e.f_name='" +
+              payload.f_name +
+              "', e.l_name='" +
+              payload.l_name +
+              "',e.tel_no='" +
+              payload.tel_no +
+              "' where u.user_id= " +
+              id +
+              ";";
+            con.query(sql, function (err, result) {
+              //console.log("result", result[0]);
+              if (err) return reject(err);
+              if (result.length < 1) {
+                return resolve([]);
+              } else {
+                console.log("returned the data");
+                return resolve(result[0]);
+              }
+            });
+          } else {
+            //console.log("hi");
+            const sql =
+              "UPDATE admin a,users u SET u.email='" +
+              payload.email +
+              "',a.f_name='" +
+              payload.f_name +
+              "', a.l_name='" +
+              payload.l_name +
+              "',a.tel_no='" +
+              payload.tel_no +
+              "' where u.user_id= " +
+              id +
+              ";";
+            con.query(sql, function (err, result) {
+              //console.log("result", result);
+              if (err) {
+                console.log(err);
+                //return reject(err);
+              }
+              if (result.length < 1) {
+                return resolve([]);
+              } else {
+                //console.log("returned the data");
+                return resolve(result[0]);
+              }
+            });
+          }
+        }
+      }
+    );
   });
 };
 
@@ -224,7 +371,7 @@ const saveUser = (con, payload) => {
       function (err, result) {
         if (err) return reject(err);
 
-        console.log(result);
+        //console.log(result);
         resolve(result);
       }
     );
@@ -318,7 +465,7 @@ const saveUserCustomer = (con, payload) => {
 
 async function authenticate({ email, password }) {
   try {
-    console.log(email);
+    //console.log(email);
     let formPassword = password;
     //console.log(formPassword);
     const conn = await db_connection();
@@ -330,7 +477,7 @@ async function authenticate({ email, password }) {
     const response = await verifyUser(conn, email, password);
 
     //console.log("response", response.password);
-    console.log("response", response);
+    //console.log("response", response);
     //console.log("response", response.length);
 
     //if (!verified) return "email or password is incorrect";
@@ -417,6 +564,7 @@ async function getSingleUser(id) {
 async function updateUser(id, payload) {
   try {
     const conn = await db_connection();
+    console.log("id", id);
     const response = await updateUserTable(conn, id, payload);
     console.log(response, "ASDADASDASDADS");
     if (response.length < 1) return "No Data";
@@ -433,9 +581,9 @@ async function updateUser(id, payload) {
 
 async function registerUser(payload) {
   try {
-    console.log("payload", payload);
+    //console.log("payload", payload);
     const conn = await db_connection();
-    console.log(conn);
+    //console.log(conn);
     const response = await saveUser(conn, payload);
     if (response)
       return { status: 200, msg: "User added successfully", response };
